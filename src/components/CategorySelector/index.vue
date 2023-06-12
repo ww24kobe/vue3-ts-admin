@@ -67,56 +67,30 @@
 
 <script lang="ts">
 export default {
-  name: "CategorySelector",
-};
+  name: 'CategorySelector',
+}
 </script>
 
 <script lang="ts" setup>
 // 从仓库中导入数据
-import { useAttrStore } from "@/stores/category";
-import { ref, onMounted } from "vue";
-import { storeToRefs } from "pinia";
+import { useAttrStore } from '@/stores/category'
+import { ref, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
 
-import type { ICategory } from "@/types/app";
+import type { ICategory } from '@/types/app'
 
-// 接收一个参数，用来控制表单的禁用状态
-// 使用 ts 还是使用 js 来做props验证，只能二选一
-// defineProps<{
-//   // 不能在这里设置默认值，因为这是ts的类型声明
-//   disabled: boolean;
-// }>({
-//   // 这个写法是 vue 提供的props验证写法，属于js
-//   disabled: {
-//     type: Boolean,
-//     default: false,
-//     required: true,
-//   },
-// });
-
-// 使用 withDefaults 来定义和设置默认值，第一个参数使用 defineProps 来定义类型，第二个参数用来定义默认值
-// https://cn.vuejs.org/api/sfc-script-setup.html#typescript-only-features
 withDefaults(
   defineProps<{
-    disabled: boolean;
+    disabled: boolean
   }>(),
   {
     disabled: false,
   }
-);
+)
 
 // 调用 useAttrStore 得到 attr 这个仓库的具体实例
-const attrStore = useAttrStore();
+const attrStore = useAttrStore()
 
-// const categories1 = ref<ICategory[]>();
-
-// onMounted(async () => {
-//   await attrStore.getCategories1();
-
-//   categories1.value = attrStore.categories1;
-// });
-
-// 使用 storeToRefs 来从仓库中导出数据，并保持组件这个数据与仓库数据的同步
-// 仓库对应的数据变化了，组件中解构出来的 categories1 也会改变
 const {
   category1Id,
   category2Id,
@@ -124,27 +98,21 @@ const {
   categories1,
   categories2,
   categories3,
-} = storeToRefs(attrStore);
+} = storeToRefs(attrStore)
 
 // 请求分类一的数据
-attrStore.getCategories1();
+attrStore.getCategories1()
 
-// 当分类一被选中的时候，发送请求获取分类二的数据
 const changeCategory1IdHandler = () => {
-  //   console.log(category1Id.value);
-  attrStore.getCategories2();
-};
+  attrStore.getCategories2()
+}
 
-// 当分类二被选中的时候，发送请求获取分类三的数据
 const changeCategory2IdHandler = () => {
-  //   console.log(category2Id.value);
-  attrStore.getCategories3();
-};
+  attrStore.getCategories3()
+}
 
-// 当分类三被选择的时候，组件内不做任何事情，只需要把选中的数据传递给父级
-const emits = defineEmits(["change-categoryId-3"]);
+const emits = defineEmits(['change-categoryId-3'])
 const changeCategory3IdHandler = () => {
-  // 不做任何额外事情，只是触发一个自定义的事件，通知父级去做事情，同时把选中的 分类三 的id传到父级
-  emits("change-categoryId-3", category3Id.value);
-};
+  emits('change-categoryId-3', category3Id.value)
+}
 </script>
